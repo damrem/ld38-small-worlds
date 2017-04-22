@@ -6,7 +6,8 @@ using Ext;
 
 public class Gravity : MonoBehaviour {
 
-	public float gravityFactor;
+	public float maxFactor;
+	public float minFactor;
 
 	List<GameObject> attractedGameObjectList = new List<GameObject> ();
 
@@ -34,6 +35,7 @@ public class Gravity : MonoBehaviour {
 			Vector2 delta = (transform.position - body.transform.position);
 
 			CircleCollider2D collider = GetComponent<CircleCollider2D> ();
+
 			float radius = collider.radius * Mathf.Sqrt (transform.localScale.x * transform.localScale.x);
 
 			if (delta.magnitude > radius)
@@ -41,7 +43,11 @@ public class Gravity : MonoBehaviour {
 
 			Vector2 attraction = delta.Normalized (radius - delta.magnitude);
 
-			body.AddForce (attraction * gravityFactor);
+			float factor = (maxFactor - minFactor) * (radius-delta.magnitude) / radius;
+			Dbg.Log (this, "factor", factor);
+
+			body.AddForce (attraction * factor);
+
 		}
 	}
 

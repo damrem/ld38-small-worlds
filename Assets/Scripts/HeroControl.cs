@@ -60,8 +60,8 @@ public class HeroControl : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{
-		Dbg.Log (this, "collide", collision, collision.collider.tag);
-		if (collision.collider.CompareTag ("Planet")) {
+		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
+			Dbg.Log (this, "collide", collision, collision.collider.tag);
 			canJump = true;
 			currentJumpLevel = 0;
 			currentNoJump = 0;
@@ -73,7 +73,7 @@ public class HeroControl : MonoBehaviour {
 //	void OnCollisionExit2D(Collision2D collision)
 //	{
 //		Dbg.Log (this, "collide", collision, collision.collider.tag);
-//		if (collision.collider.CompareTag ("Planet"))
+//		if (collision.collider.CompareTag ("PlanetBody"))
 ////			canJump = false;
 //	}
 

@@ -42,16 +42,18 @@ public class GravityAttracted : MonoBehaviour {
 
 	void SortAttractorList()
 	{
-		attractorList.Sort (delegate(GameObject a, GameObject b) {
-			float da=(transform.position-a.transform.position).magnitude;
-			float db=(transform.position-b.transform.position).magnitude;
-			return (int)Mathf.Round((da-db)*1000);
-		});
+		attractorList.Sort (SortAttractor);
+	}
+
+	int SortAttractor(GameObject a, GameObject b) {
+		float da=(transform.position-a.transform.position).magnitude;
+		float db=(transform.position-b.transform.position).magnitude;
+		return (int)Mathf.Round((da-db)*1000);
 	}
 
 	void OnTriggerExit2D(Collider2D collider)
 	{
-		if (!collider.CompareTag ("Attractor"))
+		if (!collider.CompareTag ("Planet") || !collider.isTrigger)
 			return;
 
 		attractorList.Remove (collider.gameObject);
