@@ -8,23 +8,28 @@ public class Gravity : MonoBehaviour {
 
 	public float gravityFactor;
 
-	List<GameObject> attractedList = new List<GameObject> ();
+	List<GameObject> attractedGameObjectList = new List<GameObject> ();
+
+//	void Update()
+//	{
+//		Fall ();
+//	}
 
 	void Update()
 	{
 		Fall ();
-	}
-
-	void LateUpdate()
-	{
 		Orient ();
 	}
 
 	void Fall () 
 	{
-		foreach (GameObject attracted in attractedList) {
+		foreach (GameObject attractedGameObject in attractedGameObjectList) {
 
-			Rigidbody2D body = attracted.GetComponent<Rigidbody2D> ();
+			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
+			if (gravityAttracted.ClosestAttractor != gameObject)
+				break;
+
+			Rigidbody2D body = attractedGameObject.GetComponent<Rigidbody2D> ();
 
 			Vector2 delta = (transform.position - body.transform.position);
 
@@ -34,16 +39,20 @@ public class Gravity : MonoBehaviour {
 			if (delta.magnitude > radius)
 				return;
 
-			Vector2 attraction = delta.Normalized (radius - delta.magnitude) * 2;
+			Vector2 attraction = delta.Normalized (radius - delta.magnitude);
 
 			body.AddForce (attraction * gravityFactor);
 		}
 	}
 
 	void Orient () {
-		foreach (GameObject attracted in attractedList) {
+		foreach (GameObject attractedGameObject in attractedGameObjectList) {
 
-			Rigidbody2D body = attracted.GetComponent<Rigidbody2D> ();
+			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
+			if (gravityAttracted.ClosestAttractor != gameObject)
+				break;
+
+			Rigidbody2D body = attractedGameObject.GetComponent<Rigidbody2D> ();
 
 			Vector2 delta = (transform.position - body.transform.position);
 			Vector2 normal = delta.GetNormal();
@@ -63,7 +72,7 @@ public class Gravity : MonoBehaviour {
 		if (collider.CompareTag ("Player")) {
 			Dbg.Log (this, "OnTriggerEnter2D", collider);
 			GameObject hero = collider.gameObject;
-			attractedList.Add (hero);
+			attractedGameObjectList.Add (hero);
 		}
 	}
 
@@ -72,7 +81,7 @@ public class Gravity : MonoBehaviour {
 		
 		Dbg.Log (this, "OnTriggerExit2D", collider);
 
-		attractedList.Add (collider.gameObject);
+		attractedGameObjectList.Remove (collider.gameObject);
 
 
 	}

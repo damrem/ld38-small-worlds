@@ -17,13 +17,10 @@ public class HeroControl : MonoBehaviour {
 	public int nbNoJump;
 	int currentNoJump;
 
+	public bool canJump;
 
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
+
 	// Update is called once per frame
 	void FixedUpdate () {
 
@@ -49,7 +46,7 @@ public class HeroControl : MonoBehaviour {
 			body.velocity = decelerated;
 		}
 
-		if (currentJumpLevel < nbJumpLevels && v > 0) {
+		if (canJump && currentJumpLevel < nbJumpLevels && v > 0) {
 			currentJumpLevel++;
 			Vector2 jumpForce = new Vector2 (0, jumpFactor);
 			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
@@ -65,16 +62,19 @@ public class HeroControl : MonoBehaviour {
 	{
 		Dbg.Log (this, "collide", collision, collision.collider.tag);
 		if (collision.collider.CompareTag ("Planet")) {
+			canJump = true;
 			currentJumpLevel = 0;
 			currentNoJump = 0;
 		}
 	}
 
+
+
 //	void OnCollisionExit2D(Collision2D collision)
 //	{
 //		Dbg.Log (this, "collide", collision, collision.collider.tag);
 //		if (collision.collider.CompareTag ("Planet"))
-//			canJump = false;
+////			canJump = false;
 //	}
 
 }
