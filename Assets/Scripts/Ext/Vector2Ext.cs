@@ -27,14 +27,6 @@ namespace Ext
 		public static Vector2 Rotate(this Vector2 vector, float degrees)
 		{
 			return Quaternion.Euler (0, 0, degrees) * vector;
-//			float radians = degrees * Mathf.Deg2Rad;
-//			float sin = Mathf.Sin(radians);
-//			float cos = Mathf.Cos(radians);
-//
-//			float tx = vector.x;
-//			float ty = vector.y;
-//
-//			return new Vector2(cos * tx - sin * ty, sin * tx + cos * ty);
 		}
 
 		public static Vector2 Clone(this Vector2 vector)
@@ -45,6 +37,13 @@ namespace Ext
 		public static Vector2 GetNormal(this Vector2 vector)
 		{
 			return vector.Clone ().Rotate (90);
+		}
+
+		public static Vector2 Normalized(this Vector2 vector, float length=1.0f)
+		{
+			Vector2 clone = vector.Clone ();
+			clone.Scale (new Vector2 (length, length));
+			return clone;
 		}
 	}
 }

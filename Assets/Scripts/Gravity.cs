@@ -6,7 +6,8 @@ using Ext;
 
 public class Gravity : MonoBehaviour {
 
-	public float gravityFactor = 10.0f;
+	public float gravityFactor;
+//	public float radius;
 
 	List<GameObject> attractedList=new List<GameObject>();
 	// Use this for initialization
@@ -17,30 +18,24 @@ public class Gravity : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 		foreach (GameObject attracted in attractedList) {
+
 			Rigidbody2D body = attracted.GetComponent<Rigidbody2D> ();
+
 			Vector2 delta = (transform.position - body.transform.position);
-
-
-
 			Vector2 normal = delta.GetNormal();
 
-			Dbg.Log (this, "delta", delta);
-			Quaternion rotation;
-//			rotation = Quaternion.AngleAxis(0, normal);
-//			Dbg.Log (this, "rotation", rotation);
-//			rotation = Quaternion.Euler (normal);
+			CircleCollider2D collider = GetComponent<CircleCollider2D> ();
+			float radius = collider.radius * Mathf.Sqrt (transform.localScale.x * transform.localScale.x);
+			Vector2 attraction = delta.Clone ();
+			Dbg.Log (this, radius, delta.magnitude);
+			attraction = delta.Normalized (radius - delta.magnitude) * 2;
 
-			rotation = Quaternion.LookRotation (normal.normalized, -delta.normalized);
+			Quaternion rotation = Quaternion.LookRotation (normal.normalized, -delta.normalized);
 			rotation.x = 0;
 			rotation.y = 0;
 
-//			Quaternion.
-
-
-//			attracted.transform.Rotate(normal, 0);
-			Dbg.Log (this, "rotationz", rotation);
 			body.transform.rotation = rotation;
-			body.AddForce (delta * gravityFactor);
+			body.AddForce (attraction * gravityFactor);
 		}
 	}
 
