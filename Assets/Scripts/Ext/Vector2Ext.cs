@@ -23,6 +23,21 @@ namespace Ext
 
 			return unitVector;
 		}
+
+		public static Vector2 Rotate(this Vector2 vector, float degrees)
+		{
+			return Quaternion.Euler (0, 0, degrees) * vector;
+		}
+
+		public static Vector2 Clone(this Vector2 vector)
+		{
+			return new Vector2 (vector.x, vector.y);
+		}
+
+		public static Vector2 GetNormal(this Vector2 vector)
+		{
+			return vector.Clone ().Rotate (90);
+		}
 	}
 }
 

@@ -81,12 +81,12 @@ namespace Helpers
 //			#endif
 //		}
 
-		public static void Log(params object[] messages)
-		{
-			#if VERBOSE
-			Debug.logger.Log (ToString (messages));
-			#endif
-		}
+//		public static void Log(params object[] messages)
+//		{
+//			#if VERBOSE
+//			Debug.logger.Log (ToString (messages));
+//			#endif
+//		}
 
 //		public static void Log(string tag, params object[] messages)
 //		{
