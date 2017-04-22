@@ -20,8 +20,13 @@ public class Gravity : MonoBehaviour {
 
 	void Update()
 	{
-		Fall ();
 		Orient ();
+		Fall ();
+	}
+
+	void LateUpdate()
+	{
+//		Orient ();
 	}
 
 	void Fall () 
@@ -35,9 +40,9 @@ public class Gravity : MonoBehaviour {
 //			if (gravityAttracted.attractorList[0] != gameObject)
 //				break;
 
-			Rigidbody2D body = attractedGameObject.GetComponent<Rigidbody2D> ();
+			Rigidbody2D attractedBody = attractedGameObject.GetComponent<Rigidbody2D> ();
 
-			Vector2 delta = (transform.position - body.transform.position);
+			Vector2 delta = (transform.position - attractedBody.transform.position);
 
 			CircleCollider2D collider = GetComponent<CircleCollider2D> ();
 
@@ -48,12 +53,18 @@ public class Gravity : MonoBehaviour {
 
 			Vector2 attraction = delta.Normalized (radius - delta.magnitude);
 
-			float factor = (maxFactor - minFactor) * (radius-delta.magnitude) / radius;
+			float factor = GetFactor (radius, delta.magnitude);
+			//float factor = (maxFactor - minFactor) * (radius - delta.magnitude) / radius;
 			Dbg.Log (this, "factor", factor);
 
-			body.AddForce (attraction * factor);
+			attractedBody.AddForce (attraction * factor);
 
 		}
+	}
+
+	public float GetFactor(float radius, float deltaMagnitude)
+	{
+		return (maxFactor - minFactor) * (radius - deltaMagnitude) / radius;
 	}
 
 	void Orient () {
@@ -63,19 +74,35 @@ public class Gravity : MonoBehaviour {
 			if (gravityAttracted.attractorList[0] != gameObject)
 				break;
 
-			Rigidbody2D body = attractedGameObject.GetComponent<Rigidbody2D> ();
+			Rigidbody2D attractedBody = attractedGameObject.GetComponent<Rigidbody2D> ();
 
-			Vector2 delta = (transform.position - body.transform.position);
+			Vector2 delta = (transform.position - attractedBody.transform.position);
 			Vector2 normal = delta.GetNormal();
 
-			Quaternion rotation = Quaternion.LookRotation (normal.normalized, -delta.normalized);
-			rotation.x = 0;
-			rotation.y = 0;
+			Quaternion destRotation = Quaternion.LookRotation (normal.normalized, -delta.normalized);
+			destRotation.x = 0;
+			destRotation.y = 0;
 
-			body.transform.rotation = rotation;
-
+			attractedBody.transform.rotation = destRotation;
+//			StartCoroutine(SmoothRotate(attractedBody, destRotation));
 		}
 	}
+
+//	IEnumerator SmoothRotate(Rigidbody2D attractedBody, Quaternion destRotation)
+//	{
+//		Debug.Log ("sr");
+//		Dbg.Log (this, "SmoothRotate", attractedBody, destRotation);
+//		float remainingAngle = Quaternion.Angle(attractedBody.transform.rotation, destRotation);
+//		Dbg.Log (this, "remainingAngle", remainingAngle);
+//		while (remainingAngle > float.Epsilon) {
+//			float t = (float)(Time.deltaTime);
+//			Dbg.Log (this, "t", t);
+//			Quaternion intermediaryRotation = Quaternion.RotateTowards (attractedBody.transform.rotation, destRotation, t);
+//			attractedBody.transform.rotation = intermediaryRotation;
+//			remainingAngle = Quaternion.Angle (attractedBody.transform.rotation, destRotation);
+//			yield return null;
+//		}
+//	}
 
 
 	void OnTriggerEnter2D(Collider2D collider)

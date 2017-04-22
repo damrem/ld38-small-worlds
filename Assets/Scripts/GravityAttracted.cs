@@ -13,7 +13,7 @@ public class GravityAttracted : MonoBehaviour {
 
 	public readonly List<GameObject> attractorList = new List<GameObject> ();
 
-	void Update()
+	void FixedUpdate()
 	{
 		SortAttractorList ();
 	}
@@ -32,13 +32,26 @@ public class GravityAttracted : MonoBehaviour {
 
 	void SortAttractorList()
 	{
-		attractorList.Sort (SortAttractor);
+		attractorList.Sort (SortAttractor2);
 	}
 
 	int SortAttractor(GameObject a, GameObject b) {
-		float da=(transform.position-a.transform.position).magnitude;
-		float db=(transform.position-b.transform.position).magnitude;
-		return (int)Mathf.Round((da-db)*1000);
+		float da = (transform.position - a.transform.position).magnitude;
+		float db = (transform.position - b.transform.position).magnitude;
+		return (int)Mathf.Round ((da - db) * 1000);
+	}
+
+	int SortAttractor2(GameObject a, GameObject b){
+
+		float radiusA = a.GetComponent<CircleCollider2D> ().radius;
+		float deltaMagnitudeA = (a.transform.position - transform.position).magnitude;
+		float factorA = a.GetComponent<Gravity> ().GetFactor (radiusA, deltaMagnitudeA);
+
+		float radiusB = b.GetComponent<CircleCollider2D> ().radius;
+		float deltaMagnitudeB = (b.transform.position - transform.position).magnitude;
+		float factorB = b.GetComponent<Gravity> ().GetFactor (radiusB, deltaMagnitudeB);
+
+		return (int)Mathf.Round ((factorB - factorA) * 1000);
 	}
 
 	void OnTriggerExit2D(Collider2D collider)
