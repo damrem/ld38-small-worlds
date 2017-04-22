@@ -10,7 +10,7 @@ public class Gravity : MonoBehaviour {
 
 	List<GameObject> attractedList = new List<GameObject> ();
 
-	void FixedUpdate()
+	void Update()
 	{
 		Fall ();
 	}

@@ -9,8 +9,10 @@ public class HeroControl : MonoBehaviour {
 	public float acceleration;
 	public float maxSpeed;
 	public float jumpFactor;
+	public int nbJumpLevels;
 
 	bool canJump;
+	int currentJumpLevel;
 
 	// Use this for initialization
 	void Start () {
@@ -42,7 +44,8 @@ public class HeroControl : MonoBehaviour {
 			body.velocity = decelerated;
 		}
 
-		if (canJump && v > 0) {
+		if (currentJumpLevel < nbJumpLevels && v > 0) {
+			currentJumpLevel++;
 			Vector2 jumpForce = new Vector2 (0, jumpFactor);
 			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
 			jumpForce = jumpForce.Rotate (body.transform.rotation.eulerAngles.z);
@@ -57,14 +60,14 @@ public class HeroControl : MonoBehaviour {
 	{
 		Dbg.Log (this, "collide", collision, collision.collider.tag);
 		if (collision.collider.CompareTag ("Planet"))
-			canJump = true;
+			currentJumpLevel = 0;
 	}
 
-	void OnCollisionExit2D(Collision2D collision)
-	{
-		Dbg.Log (this, "collide", collision, collision.collider.tag);
-		if (collision.collider.CompareTag ("Planet"))
-			canJump = false;
-	}
+//	void OnCollisionExit2D(Collision2D collision)
+//	{
+//		Dbg.Log (this, "collide", collision, collision.collider.tag);
+//		if (collision.collider.CompareTag ("Planet"))
+//			canJump = false;
+//	}
 
 }
