@@ -23,8 +23,20 @@ public class HeroControl : MonoBehaviour {
 
 //		Dbg.Log (this, "rotation", transform.rotation.eulerAngles);
 
-		Vector2 force = new Vector2 (h, v)*10;
-		force.Rotate (transform.rotation.eulerAngles.z);
+		Vector2 force = new Vector2 (h, 0) * 10;
+		if(force.magnitude>0)
+			Dbg.Log (this, "before force", force);
+
+//		Dbg.Log (this, "body.rotation", body.transform.rotation);
+
+//		force.Rotate(
+
+//		force += body.transform.rotation;
+
+//		Dbg.Log (this, "euler", body.transform.rotation.eulerAngles.z);
+		force = force.Rotate (body.transform.rotation.eulerAngles.z);
+		if(force.magnitude>0)
+			Dbg.Log (this, "after force", force);
 //		force.
 //		force = Quaternion.Ang
 
