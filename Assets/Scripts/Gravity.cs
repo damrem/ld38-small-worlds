@@ -7,16 +7,37 @@ using Ext;
 public class Gravity : MonoBehaviour {
 
 	public float gravityFactor;
-//	public float radius;
 
-	List<GameObject> attractedList=new List<GameObject>();
-	// Use this for initialization
-	void Start () {
-		
+	List<GameObject> attractedList = new List<GameObject> ();
+
+	void FixedUpdate()
+	{
+		Fall ();
 	}
-	
-	// Update is called once per frame
-	void LateUpdate () {
+
+	void LateUpdate()
+	{
+		Orient ();
+	}
+
+	void Fall () 
+	{
+		foreach (GameObject attracted in attractedList) {
+
+			Rigidbody2D body = attracted.GetComponent<Rigidbody2D> ();
+
+			Vector2 delta = (transform.position - body.transform.position);
+
+			CircleCollider2D collider = GetComponent<CircleCollider2D> ();
+			float radius = collider.radius * Mathf.Sqrt (transform.localScale.x * transform.localScale.x);
+
+			Vector2 attraction = delta.Normalized (radius - delta.magnitude) * 2;
+
+			body.AddForce (attraction * gravityFactor);
+		}
+	}
+
+	void Orient () {
 		foreach (GameObject attracted in attractedList) {
 
 			Rigidbody2D body = attracted.GetComponent<Rigidbody2D> ();
@@ -24,21 +45,14 @@ public class Gravity : MonoBehaviour {
 			Vector2 delta = (transform.position - body.transform.position);
 			Vector2 normal = delta.GetNormal();
 
-			CircleCollider2D collider = GetComponent<CircleCollider2D> ();
-			float radius = collider.radius * Mathf.Sqrt (transform.localScale.x * transform.localScale.x);
-			Vector2 attraction = delta.Clone ();
-			Dbg.Log (this, radius, delta.magnitude);
-			attraction = delta.Normalized (radius - delta.magnitude) * 2;
-
 			Quaternion rotation = Quaternion.LookRotation (normal.normalized, -delta.normalized);
 			rotation.x = 0;
 			rotation.y = 0;
 
 			body.transform.rotation = rotation;
-			body.AddForce (attraction * gravityFactor);
+
 		}
 	}
-
 
 
 	void OnTriggerEnter2D(Collider2D collider)
