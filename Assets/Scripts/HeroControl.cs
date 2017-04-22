@@ -8,11 +8,16 @@ public class HeroControl : MonoBehaviour {
 
 	public float acceleration;
 	public float maxSpeed;
-	public float jumpFactor;
-	public int nbJumpLevels;
 
-	bool canJump;
+	public float jumpFactor;
+
+	public int nbJumpLevels;
 	int currentJumpLevel;
+
+	public int nbNoJump;
+	int currentNoJump;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -59,8 +64,10 @@ public class HeroControl : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		Dbg.Log (this, "collide", collision, collision.collider.tag);
-		if (collision.collider.CompareTag ("Planet"))
+		if (collision.collider.CompareTag ("Planet")) {
 			currentJumpLevel = 0;
+			currentNoJump = 0;
+		}
 	}
 
 //	void OnCollisionExit2D(Collision2D collision)

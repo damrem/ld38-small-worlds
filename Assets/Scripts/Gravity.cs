@@ -31,6 +31,9 @@ public class Gravity : MonoBehaviour {
 			CircleCollider2D collider = GetComponent<CircleCollider2D> ();
 			float radius = collider.radius * Mathf.Sqrt (transform.localScale.x * transform.localScale.x);
 
+			if (delta.magnitude > radius)
+				return;
+
 			Vector2 attraction = delta.Normalized (radius - delta.magnitude) * 2;
 
 			body.AddForce (attraction * gravityFactor);
