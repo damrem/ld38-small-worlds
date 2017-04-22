@@ -11,6 +11,8 @@ public class Gravity : MonoBehaviour {
 
 	List<GameObject> attractedGameObjectList = new List<GameObject> ();
 
+	public GameObject planetBody;
+
 //	void Update()
 //	{
 //		Fall ();
@@ -26,7 +28,10 @@ public class Gravity : MonoBehaviour {
 	{
 		foreach (GameObject attractedGameObject in attractedGameObjectList) {
 
-//			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
+			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
+
+			if (gravityAttracted.land != null && gravityAttracted.land != planetBody)
+				break;
 //			if (gravityAttracted.attractorList[0] != gameObject)
 //				break;
 

@@ -17,7 +17,7 @@ public class HeroControl : MonoBehaviour {
 	public int nbNoJump;
 	int currentNoJump;
 
-	public bool canJump;
+//	public bool hasLanded;
 
 
 
@@ -40,13 +40,13 @@ public class HeroControl : MonoBehaviour {
 			}
 
 			float vComponent = 1 - body.drag;
-			Vector2 decelerated=body.velocity.Clone();
+			Vector2 decelerated = body.velocity.Clone ();
 			decelerated.x *= vComponent;
 			decelerated.y *= vComponent;
 			body.velocity = decelerated;
 		}
 
-		if (canJump && currentJumpLevel < nbJumpLevels && v > 0) {
+		if (v > 0 && (GetComponent<GravityAttracted>().land || currentJumpLevel < nbJumpLevels)) {
 			currentJumpLevel++;
 			Vector2 jumpForce = new Vector2 (0, jumpFactor);
 			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
@@ -62,7 +62,7 @@ public class HeroControl : MonoBehaviour {
 	{
 		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
 			Dbg.Log (this, "collide", collision, collision.collider.tag);
-			canJump = true;
+			//hasLanded = true;
 			currentJumpLevel = 0;
 			currentNoJump = 0;
 		}

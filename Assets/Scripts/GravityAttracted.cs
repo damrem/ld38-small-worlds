@@ -2,26 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
+
+[System.Serializable]
 public class GravityAttracted : MonoBehaviour {
 
+	[HideInInspector]
+	public GameObject land;
+
+//	[HideInInspector]
+
 	public readonly List<GameObject> attractorList = new List<GameObject> ();
-//	public GameObject ClosestAttractor {
-//		get {
-//
-//			GameObject currentAttractor = null;
-//			foreach(GameObject potentialAttractor in attractorList)
-//			{
-//				if (currentAttractor == null)
-//					currentAttractor = potentialAttractor;
-//
-//				Vector2 currentDelta = transform.position - currentAttractor.transform.position;
-//				Vector2 potentialDelta = transform.position - potentialAttractor.transform.position;
-//				if (potentialDelta.magnitude < currentDelta.magnitude)
-//					currentAttractor = potentialAttractor;
-//			}
-//			return currentAttractor;
-//		}
-//	}
 
 	void Update()
 	{
@@ -59,5 +49,19 @@ public class GravityAttracted : MonoBehaviour {
 		attractorList.Remove (collider.gameObject);
 
 
+	}
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
+			land = collision.collider.gameObject;
+		}
+	}
+
+	void OnCollisionExit2D(Collision2D collision)
+	{
+		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
+			land = null;
+		}
 	}
 }
