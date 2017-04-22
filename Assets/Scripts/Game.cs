@@ -8,7 +8,8 @@ public class Game : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 //		Dbg.AddType<HeroControl> ();
-		Dbg.AddType<Gravity> ();
+//		Dbg.AddType<Gravity> ();
+		Dbg.AddType<GravityAttracted> ();
 	}
 	
 	// Update is called once per frame

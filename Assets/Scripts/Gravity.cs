@@ -25,9 +25,9 @@ public class Gravity : MonoBehaviour {
 	{
 		foreach (GameObject attractedGameObject in attractedGameObjectList) {
 
-			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
-			if (gravityAttracted.ClosestAttractor != gameObject)
-				break;
+//			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
+//			if (gravityAttracted.attractorList[0] != gameObject)
+//				break;
 
 			Rigidbody2D body = attractedGameObject.GetComponent<Rigidbody2D> ();
 
@@ -49,7 +49,7 @@ public class Gravity : MonoBehaviour {
 		foreach (GameObject attractedGameObject in attractedGameObjectList) {
 
 			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
-			if (gravityAttracted.ClosestAttractor != gameObject)
+			if (gravityAttracted.attractorList[0] != gameObject)
 				break;
 
 			Rigidbody2D body = attractedGameObject.GetComponent<Rigidbody2D> ();
