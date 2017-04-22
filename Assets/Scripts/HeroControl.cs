@@ -28,17 +28,15 @@ public class HeroControl : MonoBehaviour {
 		body.AddForce (force * acceleration);
 
 		if (body.velocity.magnitude > 0) {
+			if (body.velocity.magnitude > maxSpeed) {
+				body.velocity = body.velocity.normalized * maxSpeed;
+			}
+
 			float vComponent = 1 - body.drag;
 			Vector2 decelerated=body.velocity.Clone();
 			decelerated.x *= vComponent;
 			decelerated.y *= vComponent;
 			body.velocity = decelerated;
 		}
-
-		if (body.velocity.magnitude > maxSpeed) {
-			body.velocity = body.velocity.normalized * maxSpeed;
-		}
-
-
 	}
 }
