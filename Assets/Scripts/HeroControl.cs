@@ -6,8 +6,11 @@ using Ext;
 
 public class HeroControl : MonoBehaviour {
 
-	public float acceleration = 100f;
-	public float maxSpeed = 1.0f;
+	public float acceleration;
+	public float maxSpeed;
+	public float jumpFactor;
+
+	bool canJump;
 
 	// Use this for initialization
 	void Start () {
@@ -22,10 +25,10 @@ public class HeroControl : MonoBehaviour {
 
 		Rigidbody2D body = GetComponent<Rigidbody2D> ();
 
-		Vector2 force = new Vector2 (h, 0);
+		Vector2 walkForce = new Vector2 (h, 0);
 
-		force = force.Rotate (body.transform.rotation.eulerAngles.z);
-		body.AddForce (force * acceleration);
+		walkForce = walkForce.Rotate (body.transform.rotation.eulerAngles.z);
+		body.AddForce (walkForce * acceleration);
 
 		if (body.velocity.magnitude > 0) {
 			if (body.velocity.magnitude > maxSpeed) {
@@ -38,5 +41,30 @@ public class HeroControl : MonoBehaviour {
 			decelerated.y *= vComponent;
 			body.velocity = decelerated;
 		}
+
+		if (canJump && v > 0) {
+			Vector2 jumpForce = new Vector2 (0, jumpFactor);
+			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
+			jumpForce = jumpForce.Rotate (body.transform.rotation.eulerAngles.z);
+			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
+			body.AddForce (jumpForce);
+		}
+
+
 	}
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		Dbg.Log (this, "collide", collision, collision.collider.tag);
+		if (collision.collider.CompareTag ("Planet"))
+			canJump = true;
+	}
+
+	void OnCollisionExit2D(Collision2D collision)
+	{
+		Dbg.Log (this, "collide", collision, collision.collider.tag);
+		if (collision.collider.CompareTag ("Planet"))
+			canJump = false;
+	}
+
 }
