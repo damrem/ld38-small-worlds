@@ -29,10 +29,12 @@ public class HeroControl : MonoBehaviour {
 	public Text boostText;
 
 	GravityAttracted attractedComponent;
+	Animator animator;
 
 	void Start()
 	{
 		attractedComponent = GetComponent<GravityAttracted> ();
+		animator = GetComponentInChildren<Animator> ();
 	}
 
 	void Update()
@@ -58,6 +60,13 @@ public class HeroControl : MonoBehaviour {
 			
 			Dbg.Log (this, "attractors", attractedComponent.AttractorList.Count);
 
+			transform.localScale = new Vector3 (-Mathf.Abs (transform.localScale.x) * h, transform.localScale.y, transform.localScale.z);
+
+			animator.SetTrigger("startWalking");
+
+			Dbg.Log (this, "animator", animator);
+
+
 			if (attractedComponent.AttractorList.Count > 0) {
 
 				Vector2 walkForce = new Vector2 (h, 0);
@@ -67,6 +76,8 @@ public class HeroControl : MonoBehaviour {
 			} else {
 				body.AddTorque (-(float)h);
 			}
+		} else {
+			animator.SetTrigger("stopWalking");
 		}
 
 		if (body.velocity.magnitude > 0) {
