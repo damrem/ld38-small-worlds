@@ -17,12 +17,12 @@ namespace Ext
 			});
 
 			if (dedupe)
-				flat = Dedupe (flat);
+				flat = Deduped (flat);
 
 			return flat;
 		}
 
-		public static List<T> Dedupe<T>(this List<T> list)
+		public static List<T> Deduped<T>(this List<T> list)
 		{
 			List<T> deduped = new List<T> ();
 			list.ForEach (delegate (T item){

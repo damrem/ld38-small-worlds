@@ -53,18 +53,35 @@ public class Gravity : MonoBehaviour {
 
 			Vector2 attraction = delta.Normalized (radius - delta.magnitude);
 
-			float factor = GetFactor (radius, delta.magnitude);
+//			float factor = GetFactor (radius, delta.magnitude);
+			float factor = GetFactor (gravityAttracted);
 			//float factor = (maxFactor - minFactor) * (radius - delta.magnitude) / radius;
-//			Dbg.Log (this, "factor", factor);
+			Dbg.Log (this, "factor", factor);
+
+//			if (gravityAttracted.land != null)
+//				factor *= 10;
 
 			attractedBody.AddForce (attraction * factor);
 
 		}
 	}
 
-	public float GetFactor(float radius, float deltaMagnitude)
+//	public float GetFactor(float radius, float deltaMagnitude)
+//	{
+//		float planetBodyRadius = Mathf.Sqrt (planetBody.transform.localScale.x * planetBody.transform.localScale.y) / 2;
+//		float attractionZoneRadius = radius - planetBodyRadius;
+////		Dbg.Log (this, "radiuses", radius, planetBodyRadius);
+//		return (maxFactor - minFactor) * (attractionZoneRadius - deltaMagnitude - planetBodyRadius) / attractionZoneRadius;
+//	}
+
+	public float GetFactor(GravityAttracted attracted)
 	{
-		return (maxFactor - minFactor) * (radius - deltaMagnitude) / radius;
+		float zoneRadius = GetComponent<CircleCollider2D> ().radius;
+		float planetBodyRadius = Mathf.Sqrt (planetBody.transform.localScale.x * planetBody.transform.localScale.y) / 2;
+		float atmosfearRadius = zoneRadius - planetBodyRadius;
+		float distanceToSurface = (attracted.transform.position - transform.position).magnitude - planetBodyRadius;
+		//		Dbg.Log (this, "radiuses", radius, planetBodyRadius);
+		return (maxFactor - minFactor) * (atmosfearRadius - distanceToSurface) / atmosfearRadius;
 	}
 
 	void Orient () {
@@ -72,19 +89,16 @@ public class Gravity : MonoBehaviour {
 
 			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
 
-			float[] gravities = gravityAttracted.attractorList.ToArray().Map(delegate(GameObject attractor){
-				return attractor.GetComponent<Gravity>().GetFactor(GetComponent<CircleCollider2D>().radius, (transform.position-gravityAttracted.transform.position).magnitude);
-			});
-
-
-
+//			float[] gravities = gravityAttracted.attractorList.ToArray().Map(delegate(GameObject attractor){
+//				return attractor.GetComponent<Gravity>().GetFactor(GetComponent<CircleCollider2D>().radius, (transform.position-gravityAttracted.transform.position).magnitude);
+//			});
 //			Dbg.Log (this, "gravities 0", gravities [0]);
-			if (gravities.Length > 1){
-				Dbg.Log (this, "gravities 1", gravities [1]);
-				Dbg.Log (this, "same", gravityAttracted.attractorList [0] == gravityAttracted.attractorList [1]);
-			}
+//			if (gravities.Length > 1){
+//				Dbg.Log (this, "gravities 1", gravities [1]);
+//				Dbg.Log (this, "same", gravityAttracted.attractorList [0] == gravityAttracted.attractorList [1]);
+//			}
 
-			if (gravityAttracted.attractorList[0] != gameObject)
+			if (gravityAttracted.AttractorList[0] != gameObject)
 				break;
 
 			if (gravityAttracted.ignoreOrientation)

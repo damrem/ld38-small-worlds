@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Helpers;
+using Ext;
 
 [System.Serializable]
 public class GravityAttracted : MonoBehaviour {
@@ -12,7 +13,8 @@ public class GravityAttracted : MonoBehaviour {
 	[HideInInspector]
 	public bool ignoreOrientation = false;
 
-	public readonly List<GameObject> attractorList = new List<GameObject> ();
+	List<GameObject> attractorList = new List<GameObject> ();
+	public List<GameObject> AttractorList{ get{ return attractorList;} }
 
 	void FixedUpdate()
 	{
@@ -28,6 +30,7 @@ public class GravityAttracted : MonoBehaviour {
 
 		Dbg.Log (this, "add attractor", collider.gameObject);
 		attractorList.Add (collider.gameObject);
+		attractorList =  attractorList.Deduped ();
 
 
 	}
@@ -45,13 +48,16 @@ public class GravityAttracted : MonoBehaviour {
 
 	int SortAttractor2(GameObject a, GameObject b){
 
-		float radiusA = a.GetComponent<CircleCollider2D> ().radius;
-		float deltaMagnitudeA = (a.transform.position - transform.position).magnitude;
-		float factorA = a.GetComponent<Gravity> ().GetFactor (radiusA, deltaMagnitudeA);
+//		float radiusA = a.GetComponent<CircleCollider2D> ().radius;
+//		float deltaMagnitudeA = (a.transform.position - transform.position).magnitude;
+//		float factorA = a.GetComponent<Gravity> ().GetFactor (radiusA, deltaMagnitudeA);
+//
+//		float radiusB = b.GetComponent<CircleCollider2D> ().radius;
+//		float deltaMagnitudeB = (b.transform.position - transform.position).magnitude;
+//		float factorB = b.GetComponent<Gravity> ().GetFactor (radiusB, deltaMagnitudeB);
 
-		float radiusB = b.GetComponent<CircleCollider2D> ().radius;
-		float deltaMagnitudeB = (b.transform.position - transform.position).magnitude;
-		float factorB = b.GetComponent<Gravity> ().GetFactor (radiusB, deltaMagnitudeB);
+		float factorA = a.GetComponent<Gravity> ().GetFactor (this);
+		float factorB = b.GetComponent<Gravity> ().GetFactor (this);
 
 		return (int)Mathf.Round ((factorB - factorA) * 1000);
 	}

@@ -56,9 +56,9 @@ public class HeroControl : MonoBehaviour {
 
 		if (h != 0) {
 			
-			Dbg.Log (this, "attractors", attractedComponent.attractorList.Count);
+			Dbg.Log (this, "attractors", attractedComponent.AttractorList.Count);
 
-			if (attractedComponent.attractorList.Count > 0) {
+			if (attractedComponent.AttractorList.Count > 0) {
 
 				Vector2 walkForce = new Vector2 (h, 0);
 
@@ -90,16 +90,18 @@ public class HeroControl : MonoBehaviour {
 //			body.AddForce (jumpForce);
 //		}
 
-		if (v > 0 && remainingBoost > 0) {
-//			currentBoost++;
-//			Dbg.Log (this, "BOOST", remainingBoost);
-			remainingBoost--;
-			Vector2 boostForce = new Vector2 (0, jumpFactor);
-//			Dbg.Log (this, "boostForce", boostForce.magnitude);
-			boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
-//			Dbg.Log (this, "boostForce", boostForce.magnitude);
-			body.AddForce (boostForce);
+		if (v > 0){
 			attractedComponent.ignoreOrientation = true;
+			if(remainingBoost > 0) {
+	//			currentBoost++;
+	//			Dbg.Log (this, "BOOST", remainingBoost);
+				remainingBoost--;
+				Vector2 boostForce = new Vector2 (0, jumpFactor);
+	//			Dbg.Log (this, "boostForce", boostForce.magnitude);
+				boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
+	//			Dbg.Log (this, "boostForce", boostForce.magnitude);
+				body.AddForce (boostForce);
+			}
 		} else
 			attractedComponent.ignoreOrientation = false;
 
