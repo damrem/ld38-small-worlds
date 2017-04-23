@@ -124,12 +124,12 @@ public class HeroControl : MonoBehaviour {
 			if (attractedComponent.AttractorList.Count > 1)
 				attractedComponent.ignoreOrientation = true;
 
-			if (attractedComponent.land != null) {
-				AudioSource source = GetComponent<AudioSource> ();
-				source.clip = jumpSounds [Rnd.Int (0, jumpSounds.Length)];
-				source.pitch = Rnd.Float (0.95f, 1.05f);
-				source.Play ();
-			}
+//			if (attractedComponent.land != null) {
+//				AudioSource source = GetComponent<AudioSource> ();
+//				source.clip = jumpSounds [Rnd.Int (0, jumpSounds.Length)];
+//				source.pitch = Rnd.Float (0.95f, 1.05f);
+//				source.Play ();
+//			}
 //				SoundManager.instance.RandomizeSfx (jumpSounds);
 
 //			if(remainingBoost > 0) {
@@ -151,6 +151,13 @@ public class HeroControl : MonoBehaviour {
 				boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
 				body.AddForce (boostForce);
 				jumpLevel--;
+
+				if (attractedComponent.land != null) {
+					AudioSource source = GetComponent<AudioSource> ();
+					source.clip = jumpSounds [Rnd.Int (0, jumpSounds.Length)];
+					source.pitch = Rnd.Float (0.95f, 1.05f);
+					source.Play ();
+				}
 			}
 		}
 
@@ -167,6 +174,7 @@ public class HeroControl : MonoBehaviour {
 
 			if (hasJumped) {
 				hasJumped = false;
+				jumpLevel = 0;
 				AudioSource source = GetComponent<AudioSource> ();
 				source.clip = landSounds [Rnd.Int (0, landSounds.Length)];
 				source.pitch = Rnd.Float (0.95f, 1.05f);
