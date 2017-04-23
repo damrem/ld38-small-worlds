@@ -51,6 +51,9 @@ public class HeroControl : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+		if (attractedComponent.AttractorList.Count == 0)
+			return;
+
 		if (Time.time > nextBoostTime && remainingBoost < maxBoost) {
 			//			canBoost = true;
 			remainingBoost++;

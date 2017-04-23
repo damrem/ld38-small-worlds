@@ -12,6 +12,9 @@ public class Game : MonoBehaviour {
 	bool isOver;
 	Text messageText;
 
+	public AudioClip fallSound;
+	public AudioSource sfxSource;
+
 	// Use this for initialization
 	void Awake() {
 		Dbg.AddType<Game> ();
@@ -35,6 +38,8 @@ public class Game : MonoBehaviour {
 		heroControl.moved.AddListener (ClearMessage);
 
 		heroGravityAttracted = hero.GetComponent<GravityAttracted> ();
+
+		sfxSource = GetComponent<AudioSource> ();
 	}
 
 	void ClearMessage()
@@ -59,6 +64,8 @@ public class Game : MonoBehaviour {
 		Dbg.Log (this, "GameOver");
 
 		StartCoroutine (Fall());
+		sfxSource.clip = fallSound;
+		sfxSource.Play ();
 
 		messageText.text = "Game Over\nPress any key to restart.";
 	}
