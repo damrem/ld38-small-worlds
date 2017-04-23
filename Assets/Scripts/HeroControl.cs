@@ -64,6 +64,9 @@ public class HeroControl : MonoBehaviour {
 		if (attractedComponent.AttractorList.Count == 0)
 			return;
 
+		if (attractedComponent.lastLand == null)
+			return;
+
 //		if (Time.time > nextBoostTime && remainingBoost < maxBoost) {
 //			//			canBoost = true;
 //			remainingBoost++;
