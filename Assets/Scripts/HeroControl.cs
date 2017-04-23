@@ -13,8 +13,8 @@ public class HeroControl : MonoBehaviour {
 
 	public float jumpFactor;
 
-	public int maxBoost;
-	int remainingBoost;
+//	public int maxBoost;
+//	int remainingBoost;
 //	int currentBoost = 0;
 
 	public int nbNoJump;
@@ -29,8 +29,10 @@ public class HeroControl : MonoBehaviour {
 
 //	int boost = 100;
 //	bool canBoost = false;
-	public float boostIncreaseDelay = 10.0f;
-	float nextBoostTime = 0.0f;
+//	public float boostIncreaseDelay = 10.0f;
+//	float nextBoostTime = 0.0f;
+	int jumpLevel = 0;
+	public int maxJumpLevel;
 
 	public Text boostText;
 
@@ -45,7 +47,7 @@ public class HeroControl : MonoBehaviour {
 
 	void Update()
 	{
-		boostText.text = remainingBoost + "/" + maxBoost;
+		boostText.text = jumpLevel + "/" + maxJumpLevel;
 	}
 
 	// Update is called once per frame
@@ -54,11 +56,11 @@ public class HeroControl : MonoBehaviour {
 		if (attractedComponent.AttractorList.Count == 0)
 			return;
 
-		if (Time.time > nextBoostTime && remainingBoost < maxBoost) {
-			//			canBoost = true;
-			remainingBoost++;
-			nextBoostTime = Time.time + boostIncreaseDelay;
-		}
+//		if (Time.time > nextBoostTime && remainingBoost < maxBoost) {
+//			//			canBoost = true;
+//			remainingBoost++;
+//			nextBoostTime = Time.time + boostIncreaseDelay;
+//		}
 
 		int h = (int)Input.GetAxisRaw ("Horizontal");
 		int v = (int)Input.GetAxisRaw ("Vertical");
@@ -114,15 +116,15 @@ public class HeroControl : MonoBehaviour {
 //			body.AddForce (jumpForce);
 //		}
 
-		if (v > 0){
+		if (v > 0) {
 
 			hasMoved = true;
 			hasJumped = true;
 
-			if(attractedComponent.AttractorList.Count>1)
+			if (attractedComponent.AttractorList.Count > 1)
 				attractedComponent.ignoreOrientation = true;
 
-			if (attractedComponent.land != null){
+			if (attractedComponent.land != null) {
 				AudioSource source = GetComponent<AudioSource> ();
 				source.clip = jumpSounds [Rnd.Int (0, jumpSounds.Length)];
 				source.pitch = Rnd.Float (0.95f, 1.05f);
@@ -130,18 +132,27 @@ public class HeroControl : MonoBehaviour {
 			}
 //				SoundManager.instance.RandomizeSfx (jumpSounds);
 
-			if(remainingBoost > 0) {
-	//			currentBoost++;
-	//			Dbg.Log (this, "BOOST", remainingBoost);
-				remainingBoost--;
-				Vector2 boostForce = new Vector2 (0, jumpFactor);
-	//			Dbg.Log (this, "boostForce", boostForce.magnitude);
-				boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
-	//			Dbg.Log (this, "boostForce", boostForce.magnitude);
-				body.AddForce (boostForce);
+//			if(remainingBoost > 0) {
+//				remainingBoost--;
+//				Vector2 boostForce = new Vector2 (0, jumpFactor);
+//				boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
+//				body.AddForce (boostForce);
+//			}
+
+			if (jumpLevel < maxJumpLevel) {
+				jumpLevel++;
 			}
-		} else
-			attractedComponent.ignoreOrientation = false;
+
+
+		} else {
+			if (jumpLevel > 0) {
+				attractedComponent.ignoreOrientation = false;
+				Vector2 boostForce = new Vector2 (0, jumpFactor);
+				boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
+				body.AddForce (boostForce);
+				jumpLevel--;
+			}
+		}
 
 		if (hasMoved)
 			moved.Invoke ();

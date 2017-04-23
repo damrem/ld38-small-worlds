@@ -11,6 +11,9 @@ public class GravityAttracted : MonoBehaviour {
 	public GameObject land;
 
 	[HideInInspector]
+	public GameObject lastLand;
+
+//	[HideInInspector]
 	public bool ignoreOrientation = false;
 
 	List<GameObject> attractorList = new List<GameObject> ();
@@ -77,7 +80,8 @@ public class GravityAttracted : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
-			land = collision.collider.gameObject;
+			land = lastLand = collision.collider.gameObject;
+
 		}
 	}
 

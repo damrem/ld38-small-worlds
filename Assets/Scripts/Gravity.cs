@@ -96,7 +96,9 @@ public class Gravity : MonoBehaviour {
 			if (gravityAttracted.AttractorList.Count == 0 || gravityAttracted.AttractorList [0] != gameObject)
 				break;
 
-			if (gravityAttracted.ignoreOrientation)
+//			if (gravityAttracted.ignoreOrientation)
+//				break;
+			if (gravityAttracted.lastLand != planetBody.gameObject)
 				break;
 
 			Rigidbody2D attractedBody = attractedGameObject.GetComponent<Rigidbody2D> ();
