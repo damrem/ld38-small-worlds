@@ -72,7 +72,6 @@ public class GravityAttracted : MonoBehaviour {
 		Dbg.Log (this, "remove attractor", collider.gameObject);
 		attractorList.Remove (collider.gameObject);
 
-
 	}
 
 	void OnCollisionEnter2D(Collision2D collision)
