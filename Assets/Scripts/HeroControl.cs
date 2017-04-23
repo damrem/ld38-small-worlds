@@ -102,7 +102,10 @@ public class HeroControl : MonoBehaviour {
 //		}
 
 		if (v > 0){
-			attractedComponent.ignoreOrientation = true;
+
+			if(attractedComponent.AttractorList.Count>1)
+				attractedComponent.ignoreOrientation = true;
+
 			if(remainingBoost > 0) {
 	//			currentBoost++;
 	//			Dbg.Log (this, "BOOST", remainingBoost);
