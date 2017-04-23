@@ -10,6 +10,16 @@ namespace Helpers
 		{
 			return random.Next (min, max);
 		}
+
+		public static float Float()
+		{
+			return (float)random.NextDouble ();
+		}
+
+		public static float Float(float min, float max)
+		{
+			return (float)(min + random.NextDouble () * (max - min));
+		}
 	}
 }
 
