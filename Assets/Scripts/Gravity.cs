@@ -55,7 +55,7 @@ public class Gravity : MonoBehaviour {
 
 			float factor = GetFactor (radius, delta.magnitude);
 			//float factor = (maxFactor - minFactor) * (radius - delta.magnitude) / radius;
-			Dbg.Log (this, "factor", factor);
+//			Dbg.Log (this, "factor", factor);
 
 			attractedBody.AddForce (attraction * factor);
 

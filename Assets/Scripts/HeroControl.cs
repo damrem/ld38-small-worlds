@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Helpers;
 using Ext;
 
@@ -11,18 +12,35 @@ public class HeroControl : MonoBehaviour {
 
 	public float jumpFactor;
 
-	public int nbJumpLevels;
-	int currentJumpLevel;
+	public int maxBoost;
+	int remainingBoost;
+//	int currentBoost = 0;
 
 	public int nbNoJump;
 	int currentNoJump;
 
 //	public bool hasLanded;
 
+//	int boost = 100;
+//	bool canBoost = false;
+	public float boostIncreaseDelay = 10.0f;
+	float nextBoostTime = 0.0f;
 
+	public Text boostText;
+
+	void Update()
+	{
+		boostText.text = remainingBoost + "/" + maxBoost;
+	}
 
 	// Update is called once per frame
 	void FixedUpdate () {
+
+		if (Time.time > nextBoostTime && remainingBoost < maxBoost) {
+			//			canBoost = true;
+			remainingBoost++;
+			nextBoostTime = Time.time + boostIncreaseDelay;
+		}
 
 		int h = (int)Input.GetAxisRaw ("Horizontal");
 		int v = (int)Input.GetAxisRaw ("Vertical");
@@ -46,13 +64,24 @@ public class HeroControl : MonoBehaviour {
 			body.velocity = decelerated;
 		}
 
-		if (v > 0 && (GetComponent<GravityAttracted>().land || currentJumpLevel < nbJumpLevels)) {
-			currentJumpLevel++;
-			Vector2 jumpForce = new Vector2 (0, jumpFactor);
-			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
-			jumpForce = jumpForce.Rotate (body.transform.rotation.eulerAngles.z);
-			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
-			body.AddForce (jumpForce);
+//		if (v > 0 && (GetComponent<GravityAttracted>().land || currentJumpLevel < nbJumpLevels)) {
+//			currentJumpLevel++;
+//			Vector2 jumpForce = new Vector2 (0, jumpFactor);
+//			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
+//			jumpForce = jumpForce.Rotate (body.transform.rotation.eulerAngles.z);
+//			Dbg.Log (this, "jumpForce", jumpForce.magnitude);
+//			body.AddForce (jumpForce);
+//		}
+
+		if (v > 0 && remainingBoost > 0) {
+//			currentBoost++;
+			Dbg.Log(this, "BOOST", remainingBoost);
+			remainingBoost--;
+			Vector2 boostForce = new Vector2 (0, jumpFactor);
+//			Dbg.Log (this, "boostForce", boostForce.magnitude);
+			boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
+//			Dbg.Log (this, "boostForce", boostForce.magnitude);
+			body.AddForce (boostForce);
 		}
 
 
@@ -63,7 +92,7 @@ public class HeroControl : MonoBehaviour {
 		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
 			Dbg.Log (this, "collide", collision, collision.collider.tag);
 			//hasLanded = true;
-			currentJumpLevel = 0;
+//			boost = 0;
 			currentNoJump = 0;
 		}
 	}
