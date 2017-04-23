@@ -13,10 +13,16 @@ public class Gravity : MonoBehaviour {
 
 	public GameObject planetBody;
 
-//	void Update()
-//	{
-//		Fall ();
-//	}
+	float zoneRadius;
+	float planetBodyRadius;
+	float atmosfearRadius;
+
+	void Start()
+	{
+		zoneRadius = GetComponent<CircleCollider2D> ().radius;
+		planetBodyRadius = Mathf.Sqrt (planetBody.transform.localScale.x * planetBody.transform.localScale.y) / 2;
+		atmosfearRadius = zoneRadius - planetBodyRadius;
+	}
 
 	void Update()
 	{
@@ -66,22 +72,11 @@ public class Gravity : MonoBehaviour {
 		}
 	}
 
-//	public float GetFactor(float radius, float deltaMagnitude)
-//	{
-//		float planetBodyRadius = Mathf.Sqrt (planetBody.transform.localScale.x * planetBody.transform.localScale.y) / 2;
-//		float attractionZoneRadius = radius - planetBodyRadius;
-////		Dbg.Log (this, "radiuses", radius, planetBodyRadius);
-//		return (maxFactor - minFactor) * (attractionZoneRadius - deltaMagnitude - planetBodyRadius) / attractionZoneRadius;
-//	}
-
 	public float GetFactor(GravityAttracted attracted)
 	{
-		float zoneRadius = GetComponent<CircleCollider2D> ().radius;
-		float planetBodyRadius = Mathf.Sqrt (planetBody.transform.localScale.x * planetBody.transform.localScale.y) / 2;
-		float atmosfearRadius = zoneRadius - planetBodyRadius;
 		float distanceToSurface = (attracted.transform.position - transform.position).magnitude - planetBodyRadius;
 		//		Dbg.Log (this, "radiuses", radius, planetBodyRadius);
-		return (maxFactor - minFactor) * (atmosfearRadius - distanceToSurface) / atmosfearRadius;
+		return minFactor + (maxFactor - minFactor) * (atmosfearRadius - distanceToSurface) / atmosfearRadius;
 	}
 
 	void Orient () {
@@ -98,7 +93,7 @@ public class Gravity : MonoBehaviour {
 //				Dbg.Log (this, "same", gravityAttracted.attractorList [0] == gravityAttracted.attractorList [1]);
 //			}
 
-			if (gravityAttracted.AttractorList[0] != gameObject)
+			if (gravityAttracted.AttractorList.Count == 0 || gravityAttracted.AttractorList [0] != gameObject)
 				break;
 
 			if (gravityAttracted.ignoreOrientation)
