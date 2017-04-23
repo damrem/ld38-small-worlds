@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Helpers;
 using Ext;
+using UnityEngine.Events;
 
 public class HeroControl : MonoBehaviour {
 
@@ -18,6 +19,8 @@ public class HeroControl : MonoBehaviour {
 
 	public int nbNoJump;
 	int currentNoJump;
+
+	public UnityEvent moved = new UnityEvent();
 
 //	public bool hasLanded;
 
@@ -56,7 +59,11 @@ public class HeroControl : MonoBehaviour {
 
 		Rigidbody2D body = GetComponent<Rigidbody2D> ();
 
+		bool hasMoved = false;
+
 		if (h != 0) {
+
+			hasMoved = true;
 			
 			Dbg.Log (this, "attractors", attractedComponent.AttractorList.Count);
 
@@ -103,6 +110,8 @@ public class HeroControl : MonoBehaviour {
 
 		if (v > 0){
 
+			hasMoved = true;
+
 			if(attractedComponent.AttractorList.Count>1)
 				attractedComponent.ignoreOrientation = true;
 
@@ -119,7 +128,8 @@ public class HeroControl : MonoBehaviour {
 		} else
 			attractedComponent.ignoreOrientation = false;
 
-
+		if (hasMoved)
+			moved.Invoke ();
 	}
 
 //	void OnCollisionEnter2D(Collision2D collision)

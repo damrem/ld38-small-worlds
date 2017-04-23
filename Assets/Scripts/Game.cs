@@ -7,6 +7,7 @@ using Helpers;
 public class Game : MonoBehaviour {
 
 	GameObject hero;
+	HeroControl heroControl;
 	bool isOver;
 	Text messageText;
 
@@ -19,8 +20,19 @@ public class Game : MonoBehaviour {
 
 		hero = GameObject.FindGameObjectWithTag ("Player");
 		messageText = GameObject.Find ("MessageText").GetComponent<Text> ();
+
+		messageText.text = "Small Worlds!\n@damrem\n#ld38\n\nUse arrow keys to move.";
+
+		heroControl = hero.GetComponent<HeroControl> ();
+		heroControl.moved.AddListener (ClearMessage);
 	}
-	
+
+	void ClearMessage()
+	{
+		heroControl.moved.RemoveListener (ClearMessage);
+		messageText.text = "";
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
