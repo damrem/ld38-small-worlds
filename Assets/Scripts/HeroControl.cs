@@ -39,6 +39,11 @@ public class HeroControl : MonoBehaviour {
 	GravityAttracted attractedComponent;
 	Animator animator;
 
+	void Awake()
+	{
+		gameObject.GetComponent<Rigidbody2D> ().velocity = new Vector3 ();
+	}
+
 	void Start()
 	{
 		attractedComponent = GetComponent<GravityAttracted> ();

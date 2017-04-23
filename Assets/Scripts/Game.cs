@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Helpers;
 using Ext;
 
@@ -71,6 +72,13 @@ public class Game : MonoBehaviour {
 
 		if (planets.Length == visitedPlanets.Length)
 			Victory ();
+
+
+		if (isOver) {
+			if (Input.anyKey) {
+				SceneManager.LoadScene ("level01");
+			}
+		}
 	}
 
 	void GameOver()
@@ -82,6 +90,11 @@ public class Game : MonoBehaviour {
 		sfxSource.clip = fallSound;
 		sfxSource.Play ();
 
+		Invoke ("ShowGameOverMessage", 1f);
+	}
+
+	void ShowGameOverMessage()
+	{
 		messageText.text = "Game Over\nPress any key to restart.";
 	}
 
