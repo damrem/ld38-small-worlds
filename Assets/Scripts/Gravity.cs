@@ -78,7 +78,7 @@ public class Gravity : MonoBehaviour {
 
 
 
-			Dbg.Log (this, "gravities 0", gravities [0]);
+//			Dbg.Log (this, "gravities 0", gravities [0]);
 			if (gravities.Length > 1){
 				Dbg.Log (this, "gravities 1", gravities [1]);
 				Dbg.Log (this, "same", gravityAttracted.attractorList [0] == gravityAttracted.attractorList [1]);

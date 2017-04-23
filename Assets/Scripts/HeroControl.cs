@@ -54,10 +54,20 @@ public class HeroControl : MonoBehaviour {
 
 		Rigidbody2D body = GetComponent<Rigidbody2D> ();
 
-		Vector2 walkForce = new Vector2 (h, 0);
+		if (h != 0) {
+			
+			Dbg.Log (this, "attractors", attractedComponent.attractorList.Count);
 
-		walkForce = walkForce.Rotate (body.transform.rotation.eulerAngles.z);
-		body.AddForce (walkForce * acceleration);
+			if (attractedComponent.attractorList.Count > 0) {
+
+				Vector2 walkForce = new Vector2 (h, 0);
+
+				walkForce = walkForce.Rotate (body.transform.rotation.eulerAngles.z);
+				body.AddForce (walkForce * acceleration);
+			} else {
+				body.AddTorque (-(float)h);
+			}
+		}
 
 		if (body.velocity.magnitude > 0) {
 			if (body.velocity.magnitude > maxSpeed) {
@@ -82,7 +92,7 @@ public class HeroControl : MonoBehaviour {
 
 		if (v > 0 && remainingBoost > 0) {
 //			currentBoost++;
-			Dbg.Log (this, "BOOST", remainingBoost);
+//			Dbg.Log (this, "BOOST", remainingBoost);
 			remainingBoost--;
 			Vector2 boostForce = new Vector2 (0, jumpFactor);
 //			Dbg.Log (this, "boostForce", boostForce.magnitude);
@@ -96,15 +106,15 @@ public class HeroControl : MonoBehaviour {
 
 	}
 
-	void OnCollisionEnter2D(Collision2D collision)
-	{
-		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
-			Dbg.Log (this, "collide", collision, collision.collider.tag);
-			//hasLanded = true;
-//			boost = 0;
-			currentNoJump = 0;
-		}
-	}
+//	void OnCollisionEnter2D(Collision2D collision)
+//	{
+//		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
+////			Dbg.Log (this, "collide", collision, collision.collider.tag);
+//			//hasLanded = true;
+////			boost = 0;
+//			currentNoJump = 0;
+//		}
+//	}
 
 
 

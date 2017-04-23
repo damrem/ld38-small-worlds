@@ -26,6 +26,7 @@ public class GravityAttracted : MonoBehaviour {
 		if (!collider.CompareTag ("Attractor"))
 			return;
 
+		Dbg.Log (this, "add attractor", collider.gameObject);
 		attractorList.Add (collider.gameObject);
 
 
@@ -57,9 +58,12 @@ public class GravityAttracted : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D collider)
 	{
-		if (!collider.CompareTag ("Planet") || !collider.isTrigger)
+		Dbg.Log (this, "OnTriggerExit2D", collider);
+
+		if (!collider.CompareTag ("Attractor"))
 			return;
 
+		Dbg.Log (this, "remove attractor", collider.gameObject);
 		attractorList.Remove (collider.gameObject);
 
 
