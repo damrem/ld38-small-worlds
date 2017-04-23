@@ -7,7 +7,7 @@ public class Follow : MonoBehaviour {
 
 	public GameObject target;
 
-	void Update () {
+	void LateUpdate () {
 
 		Vector2 delta = target.transform.position - transform.position;
 

@@ -22,6 +22,9 @@ public class HeroControl : MonoBehaviour {
 
 	public UnityEvent moved = new UnityEvent();
 
+	public AudioClip[] jumpSounds;
+	public AudioClip[] landSounds;
+
 //	public bool hasLanded;
 
 //	int boost = 100;
@@ -111,9 +114,18 @@ public class HeroControl : MonoBehaviour {
 		if (v > 0){
 
 			hasMoved = true;
+			hasJumped = true;
 
 			if(attractedComponent.AttractorList.Count>1)
 				attractedComponent.ignoreOrientation = true;
+
+			if (attractedComponent.land != null){
+				AudioSource source = GetComponent<AudioSource> ();
+				source.clip = jumpSounds [Rnd.Int (0, jumpSounds.Length)];
+				source.pitch = Rnd.Float (0.95f, 1.05f);
+				source.Play ();
+			}
+//				SoundManager.instance.RandomizeSfx (jumpSounds);
 
 			if(remainingBoost > 0) {
 	//			currentBoost++;
@@ -132,15 +144,26 @@ public class HeroControl : MonoBehaviour {
 			moved.Invoke ();
 	}
 
-//	void OnCollisionEnter2D(Collision2D collision)
-//	{
-//		if (collision.collider.CompareTag ("Planet") && !collision.collider.isTrigger) {
+	bool hasJumped = false;
+
+	void OnCollisionEnter2D(Collision2D collision)
+	{
+		
+		if (collision.collider.CompareTag ("Planet")) {
+
+			if (hasJumped) {
+				hasJumped = false;
+				AudioSource source = GetComponent<AudioSource> ();
+				source.clip = landSounds [Rnd.Int (0, landSounds.Length)];
+				source.pitch = Rnd.Float (0.95f, 1.05f);
+				source.Play ();
+			}
 ////			Dbg.Log (this, "collide", collision, collision.collider.tag);
 //			//hasLanded = true;
 ////			boost = 0;
 //			currentNoJump = 0;
-//		}
-//	}
+		}
+	}
 
 
 

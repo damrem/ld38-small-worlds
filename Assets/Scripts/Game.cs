@@ -8,15 +8,23 @@ public class Game : MonoBehaviour {
 
 	GameObject hero;
 	HeroControl heroControl;
+	GravityAttracted heroGravityAttracted;
 	bool isOver;
 	Text messageText;
 
 	// Use this for initialization
-	void Start () {
+	void Awake() {
 		Dbg.AddType<Game> ();
 		Dbg.AddType<HeroControl> ();
 //		Dbg.AddType<Gravity> ();
 //		Dbg.AddType<GravityAttracted> ();
+
+		Dbg.Log (this, "Awake");
+	}
+
+	void Start()
+	{
+		Dbg.Log (this, "Start");
 
 		hero = GameObject.FindGameObjectWithTag ("Player");
 		messageText = GameObject.Find ("MessageText").GetComponent<Text> ();
@@ -25,6 +33,8 @@ public class Game : MonoBehaviour {
 
 		heroControl = hero.GetComponent<HeroControl> ();
 		heroControl.moved.AddListener (ClearMessage);
+
+		heroGravityAttracted = hero.GetComponent<GravityAttracted> ();
 	}
 
 	void ClearMessage()
@@ -34,9 +44,9 @@ public class Game : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		
-		if (!isOver && hero.GetComponent<GravityAttracted> ().AttractorList.Count == 0)
+		if (!isOver && heroGravityAttracted.AttractorList.Count == 0)
 			GameOver ();
 
 
