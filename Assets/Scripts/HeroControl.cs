@@ -28,6 +28,13 @@ public class HeroControl : MonoBehaviour {
 
 	public Text boostText;
 
+	GravityAttracted attractedComponent;
+
+	void Start()
+	{
+		attractedComponent = GetComponent<GravityAttracted> ();
+	}
+
 	void Update()
 	{
 		boostText.text = remainingBoost + "/" + maxBoost;
@@ -75,14 +82,16 @@ public class HeroControl : MonoBehaviour {
 
 		if (v > 0 && remainingBoost > 0) {
 //			currentBoost++;
-			Dbg.Log(this, "BOOST", remainingBoost);
+			Dbg.Log (this, "BOOST", remainingBoost);
 			remainingBoost--;
 			Vector2 boostForce = new Vector2 (0, jumpFactor);
 //			Dbg.Log (this, "boostForce", boostForce.magnitude);
 			boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
 //			Dbg.Log (this, "boostForce", boostForce.magnitude);
 			body.AddForce (boostForce);
-		}
+			attractedComponent.ignoreOrientation = true;
+		} else
+			attractedComponent.ignoreOrientation = false;
 
 
 	}

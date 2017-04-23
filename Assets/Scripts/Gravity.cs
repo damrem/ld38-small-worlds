@@ -71,7 +71,23 @@ public class Gravity : MonoBehaviour {
 		foreach (GameObject attractedGameObject in attractedGameObjectList) {
 
 			GravityAttracted gravityAttracted = attractedGameObject.GetComponent<GravityAttracted> ();
+
+			float[] gravities = gravityAttracted.attractorList.ToArray().Map(delegate(GameObject attractor){
+				return attractor.GetComponent<Gravity>().GetFactor(GetComponent<CircleCollider2D>().radius, (transform.position-gravityAttracted.transform.position).magnitude);
+			});
+
+
+
+			Dbg.Log (this, "gravities 0", gravities [0]);
+			if (gravities.Length > 1){
+				Dbg.Log (this, "gravities 1", gravities [1]);
+				Dbg.Log (this, "same", gravityAttracted.attractorList [0] == gravityAttracted.attractorList [1]);
+			}
+
 			if (gravityAttracted.attractorList[0] != gameObject)
+				break;
+
+			if (gravityAttracted.ignoreOrientation)
 				break;
 
 			Rigidbody2D attractedBody = attractedGameObject.GetComponent<Rigidbody2D> ();

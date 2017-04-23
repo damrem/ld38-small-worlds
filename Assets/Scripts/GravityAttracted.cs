@@ -9,7 +9,8 @@ public class GravityAttracted : MonoBehaviour {
 	[HideInInspector]
 	public GameObject land;
 
-//	[HideInInspector]
+	[HideInInspector]
+	public bool ignoreOrientation = false;
 
 	public readonly List<GameObject> attractorList = new List<GameObject> ();
 
