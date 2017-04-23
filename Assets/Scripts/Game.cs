@@ -69,7 +69,7 @@ public class Game : MonoBehaviour {
 //		Dbg.Log(this, "visiteds", visitedPlanets.Length);
 		//if(GetComponentInChildren<GravityAttracted>()
 
-		if (planets.Length == visitedPlanets.Length || true)
+		if (planets.Length == visitedPlanets.Length)
 			Victory ();
 	}
 

@@ -53,6 +53,9 @@ public class HeroControl : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+		if (Game.isOver)
+			return;
+
 		if (attractedComponent.AttractorList.Count == 0)
 			return;
 
