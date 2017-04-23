@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Helpers;
+using Ext;
 
 public class Game : MonoBehaviour {
 
 	GameObject hero;
 	HeroControl heroControl;
 	GravityAttracted heroGravityAttracted;
-	bool isOver;
+	public static bool isOver;
 	Text messageText;
 
 	public AudioClip fallSound;
@@ -25,6 +26,7 @@ public class Game : MonoBehaviour {
 		Dbg.Log (this, "Awake");
 	}
 
+	PlanetView[] planets;
 	void Start()
 	{
 		Dbg.Log (this, "Start");
@@ -40,6 +42,10 @@ public class Game : MonoBehaviour {
 		heroGravityAttracted = hero.GetComponent<GravityAttracted> ();
 
 		sfxSource = GetComponent<AudioSource> ();
+
+		planets = GetComponentsInChildren<PlanetView> ();
+
+		isOver = false;
 	}
 
 	void ClearMessage()
@@ -54,8 +60,17 @@ public class Game : MonoBehaviour {
 		if (!isOver && heroGravityAttracted.AttractorList.Count == 0)
 			GameOver ();
 
+//		Dbg.Log (this, "planets", planets.Length);
 
+		PlanetView[] visitedPlanets = planets.Filter (delegate(PlanetView t) {
+			return t.hasBeenVisited;
+		});
+
+//		Dbg.Log(this, "visiteds", visitedPlanets.Length);
 		//if(GetComponentInChildren<GravityAttracted>()
+
+		if (planets.Length == visitedPlanets.Length || true)
+			Victory ();
 	}
 
 	void GameOver()
@@ -68,6 +83,12 @@ public class Game : MonoBehaviour {
 		sfxSource.Play ();
 
 		messageText.text = "Game Over\nPress any key to restart.";
+	}
+
+	void Victory()
+	{
+		isOver = true;
+		messageText.text = "You visited all the Small Worlds for now!\nHope you enjoyed.\nMade in 48h by @damrem for #ld48.";
 	}
 
 	IEnumerator Fall()

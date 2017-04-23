@@ -180,6 +180,13 @@ public class HeroControl : MonoBehaviour {
 				source.pitch = Rnd.Float (0.95f, 1.05f);
 				source.Play ();
 			}
+
+			PlanetView planet = collision.collider.gameObject.GetComponent<PlanetView> ();
+			HaloBehaviour halo = planet.gravityField.GetComponent<HaloBehaviour>();
+			Dbg.Log (this, "halo", halo);
+			halo.Highlight ();
+			planet.hasBeenVisited = true;
+
 ////			Dbg.Log (this, "collide", collision, collision.collider.tag);
 //			//hasLanded = true;
 ////			boost = 0;
