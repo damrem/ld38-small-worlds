@@ -20,7 +20,8 @@ public class HaloBehaviour : MonoBehaviour {
 //		backPos.y = 0.1f;
 //		haloInstance.transform.position = new Vector3 (0.1f, 0.1f, 1.23f);
 		float size = GetComponent<CircleCollider2D> ().radius * 2;
-		haloLight.areaSize = new Vector2 (size, size);
+//		haloLight.areaSize = new Vector2 (size, size);
+		haloLight.range=size;
 		backPos.z = size;
 		haloInstance.transform.position = backPos;
 	}
