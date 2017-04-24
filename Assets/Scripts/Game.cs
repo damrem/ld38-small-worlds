@@ -19,9 +19,9 @@ public class Game : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake() {
-		Dbg.AddType<Game> ();
+//		Dbg.AddType<Game> ();
 		Dbg.AddType<HeroControl> ();
-//		Dbg.AddType<Gravity> ();
+		Dbg.AddType<Gravity> ();
 //		Dbg.AddType<GravityAttracted> ();
 
 		Dbg.Log (this, "Awake");

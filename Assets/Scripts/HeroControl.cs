@@ -149,7 +149,7 @@ public class HeroControl : MonoBehaviour {
 //				boostForce = boostForce.Rotate (body.transform.rotation.eulerAngles.z);
 //				body.AddForce (boostForce);
 //			}
-
+			Dbg.Log(this, "jump", jumpLevel, maxJumpLevel);
 			if (jumpLevel < maxJumpLevel) {
 				jumpLevel++;
 			}
