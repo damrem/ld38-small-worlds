@@ -19,9 +19,9 @@ public class Game : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake() {
-//		Dbg.AddType<Game> ();
-		Dbg.AddType<HeroControl> ();
-		Dbg.AddType<Gravity> ();
+		Dbg.AddType<Game>();
+		//Dbg.AddType<HeroControl> ();
+		//Dbg.AddType<Gravity> ();
 //		Dbg.AddType<GravityAttracted> ();
 
 		Dbg.Log (this, "Awake");
@@ -35,7 +35,7 @@ public class Game : MonoBehaviour {
 		hero = GameObject.FindGameObjectWithTag ("Player");
 		messageText = GameObject.Find ("MessageText").GetComponent<Text> ();
 
-		messageText.text = "Small Worlds!\n@damrem\n#ld38\n\nUse arrow keys to move.";
+		messageText.text = "\n\n\nSmall Worlds!\nMade by @damrem in 48h for #ld38.\n\n\nUse arrow keys to move.\nYou can 'multi-jump'.\n\n\nMusic by @Ynck_33.";
 
 		heroControl = hero.GetComponent<HeroControl> ();
 		heroControl.moved.AddListener (ClearMessage);
@@ -101,7 +101,7 @@ public class Game : MonoBehaviour {
 	void Victory()
 	{
 		isOver = true;
-		messageText.text = "You visited all the Small Worlds for now!\nHope you enjoyed.\nMade in 48h by @damrem for #ld48.";
+		messageText.text = "You visited all the Small Worlds for now,\nhope you enjoyed!\n\n\nMade by @damrem in 48h for #ld38.\n\n\nYou played the post-compo edition:\nmusic by @Ynck_33.";
 	}
 
 	IEnumerator Fall()
